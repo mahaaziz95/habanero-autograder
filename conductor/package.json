@@ -1,0 +1,29 @@
+{
+  "name": "HabaneroAutograder",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Habanero Auto-Grader",
+  "license": "MIT",
+  "repository": "https://bitbucket.org/max-grossman/habanero-autograder",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "bootstrap": "3.3.5",
+    "ejs": "2.3.4",
+    "body-parser": "1.14.1",
+    "express-session": "^1.7.6",
+    "bcrypt-nodejs": "0.0.3",
+    "pg": "4.4.3",
+    "multer": "1.1.0",
+    "fs-extra": "0.26.2",
+    "svn-spawn": "0.1.4",
+    "ssh2": "0.4.12",
+    "nodemailer": "1.10.0",
+    "moment": "2.11.2",
+    "archiver": "0.21.0",
+    "temp": "0.8.3"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

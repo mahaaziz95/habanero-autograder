@@ -1,0 +1,31 @@
+{
+  "correctness": [
+    { "testname": "edu.rice.comp322.Homework3Checkpoint1CorrectnessTest.testIdealParScoring1", "points_worth": 2.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint1CorrectnessTest.testIdealParScoring2", "points_worth": 2.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint1CorrectnessTest.testIdealParScoring3", "points_worth": 3.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint1CorrectnessTest.testIdealParScoring4", "points_worth": 3.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint2CorrectnessTest.testUsefulParScoring1", "points_worth": 2.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint2CorrectnessTest.testUsefulParScoring2", "points_worth": 2.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint2CorrectnessTest.testUsefulParScoring3", "points_worth": 3.0 },
+    { "testname": "edu.rice.comp322.Homework3Checkpoint2CorrectnessTest.testUsefulParScoring4", "points_worth": 3.0 }
+  ],
+  "performance": {
+    "tests": [
+      { "testname": "edu.rice.comp322.Homework3PerformanceTest.testUsefulParScoring", "points_worth": 10.0, "ncores": 4,
+        "grading": [
+          { "bottom_inclusive": 0.0, "top_exclusive": 1.0, "points_off": 10.0 },
+          { "bottom_inclusive": 1.0, "top_exclusive": 1.5, "points_off": 8.0 },
+          { "bottom_inclusive": 1.5, "top_exclusive": 2.0, "points_off": 6.0 },
+          { "bottom_inclusive": 2.0, "top_exclusive": 2.5, "points_off": 4.0 },
+          { "bottom_inclusive": 2.5, "top_exclusive": 3.0, "points_off": 2.0 },
+          { "bottom_inclusive": 3.0, "top_exclusive": -1.0, "points_off": 0.0 }
+        ]
+      }
+    ],
+    "characteristic_test": "edu.rice.comp322.Homework3PerformanceTest.testUsefulParScoring"
+  },
+  "style": {
+    "points_per_error": 0.2,
+    "max_points_off": 0.0
+  }
+}

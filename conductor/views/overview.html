@@ -1,0 +1,154 @@
+<html>
+  <head>
+    <title>Overview</title>
+    <link rel="stylesheet" href="/third_party/bootstrap.min.css">
+    <script src="/third_party/jquery-2.1.4.min.js"></script>
+    <script src="/third_party/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      function set_dropdown_label(lbl) {
+        $('#dropdown-button').text(lbl);
+        $('#assignment_id').val(lbl);
+      }
+
+      var submitting = false;
+
+      $(function () {
+              $('#submit').click(function(e) {
+                      if (submitting) {
+                        e.preventDefault();
+                        $('#submit').prop('value', 'Already submitting...');
+                      } else {
+                        submitting = true;
+                        $('#submit').prop('value', 'Submitting...');
+                      }
+                  });
+              $('#zip').bind('change', function() {
+                      if (this.files[0].size > 1 * 1024 * 1024) {
+                          show_error('Your ZIP is larger than 1MB, it is strongly ' +
+                              'recommended large submissions be made via SVN ' +
+                              'instead. Some browsers do not handle large ' +
+                              'file uploads well, and assume that long upload ' +
+                              'times indicate a failed connection.');
+                      } else {
+                          hide_error();
+                      }
+                  });
+      });
+    </script>
+  </head>
+
+  <body>
+    <% include header.html %>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h3>Submit Test Run</h3>
+        <hr/>
+
+        <form id="submit_run_form" action="/submit_run" method="post" enctype="multipart/form-data">
+
+          <div class="col-md-12;" align="center">
+            <div class="dropdown col-md-4 col-md-offset-2" style="padding-right: 30px; padding-bottom: 10px;">
+              <button id='dropdown-button' class="btn btn-primary btn-block dropdown-toggle" type="button" data-toggle="dropdown" style="width: 100%">Select Assignment</button>
+              <ul class="dropdown-menu" role="menu" id="assignment-dropdown" style="width: 100%">
+                  <% if (assignments.length === 0) { %>
+                  <li><a href="#">No Assignments Available</a></li>
+                  <% } else { %>
+                  <%     for (var i = 0; i < assignments.length; i++) { %>
+                  <li><a href="#" onclick=set_dropdown_label("<%= assignments[i].name %>")><%= assignments[i].name %></a></li>
+                  <%     } %>
+                  <% } %>
+              </ul>
+            </div>
+
+            <div class="col-md-6" style="padding-right: 30px">
+              <div align="center" width="100%" style="padding: 5px 5px 5px 5px; margin: 0px 5px 5px 5px; border: 1px solid gray;">
+                <input name="zip" id="zip" type="file"/>
+                </p>
+                <p><b>OR</b></p>
+                <input name="svn_url" style="width: 100%" type="text" placeholder="SVN URL" id="svn_url"/>
+                </p>
+                <div>
+                <input type="checkbox" name="correctness_only" defaultValue="off" defaultChecked="on">&nbsp;&nbsp;Correctness Tests Only</input>
+                </div>
+                <div>
+                <input type="checkbox" name="enable_profiling" defaultValue="off" defaultChecked="on">&nbsp;&nbsp;Enable Performance Profiling</input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding-top: 10px">
+            <input style="width: 40%; margin:0 auto; display:block;" value="Run" id="submit" name="submit" type="submit" class="btn btn-primary" style="float:right"/>
+          </div>
+          <input name="assignment" type="hidden" value="" id="assignment_id"/>
+        </form>
+      </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+      <hr/>
+      <h3>Past Runs</h3>
+      <hr/>
+
+      <center>
+          <font size=3>
+              <a href="/overview/0">0</a>
+              ...
+              <% if (page > 0) { %>
+                  <a href="/overview/<%= page - 1 %>"><%= page - 1 %></a>
+              <% } %>
+              <a href="/overview/<%= page %>"><b><%= page %></b></a>
+              <% if (page < parseInt(npages) - 1) { %>
+                  <a href="/overview/<%= parseInt(page) + 1 %>"><%= parseInt(page) + 1 %></a>
+              <% } %>
+              ...
+              <a href="/overview/<%= parseInt(npages) - 1 %>"><%= parseInt(npages) - 1 %></a>
+          </font>
+      </center>
+
+      <hr/>
+      <table id="past-runs" style="width:100%;" class="table table-hover table-bordered table-condensed">
+      <!-- TODO -->
+      <tr><td bgcolor="#AAAAAA"><center><b>Run ID</b></center></td>
+          <td bgcolor="#AAAAAA"><center><b>Completion Time</b></center></td>
+          <td bgcolor="#AAAAAA"><center><b>Assignment</b></center></td>
+          <td bgcolor="#AAAAAA"><center><b>Status</b></center></td>
+          <td bgcolor="#AAAAAA"></td>
+      </tr>
+      <% for (var r = 0; r < runs.length; r++) { %>
+      <%     var curr = runs[r]; %>
+      <%     var status = curr.status; %>
+      <%     var status_color = status === 'FINISHED' ? 'green' : ((status === 'FAILED' || status === 'CANCELLED') ? 'red' : 'orange'); %>
+      <%     var finish_time_str = ''; %>
+      <%     if (curr.finish_time) { %>
+      <%         var is_afternoon = curr.finish_time.getHours() >= 12; %>
+      <%         var normalized_hours = curr.finish_time.getHours() % 12; %>
+      <%         if (normalized_hours == 0) normalized_hours = 12; %>
+      <%         finish_time_str = curr.finish_time.getMonth() + 1 + '/' +
+                     curr.finish_time.getDate() + '/' +
+                     curr.finish_time.getFullYear() + ' ' + normalized_hours +
+                     ':' + curr.finish_time.getMinutes() + ' ' +
+                     (is_afternoon ? 'PM' : 'AM') + ' CST'; %>
+      <%     } %>
+             <tr><td><center><a href=/run/<%= curr.run_id %>><%= curr.run_id %></a></center></td>
+                 <td><center><%= finish_time_str %></center></td>
+                 <td><center><%= curr.assignment_name %></center></td>
+                 <td><center><font color=<%= status_color %>><%= curr.status %></font></center></td>
+                 <td><center>
+                     <form action="/cancel/<%= curr.run_id %>" method="post" enctype="multipart/form-data">
+                         <button type="submit" class="button btn-primary btn-block" type="button" style="width: 100%">Cancel</button>
+                     </form></center>
+                 </td>
+             </tr>
+      <% } %>
+      </table>
+      </div>
+    </div>
+
+
+    <% include footer.html %>
+  </body>
+</html>

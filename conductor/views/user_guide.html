@@ -1,0 +1,175 @@
+<html>
+  <head>
+    <title>User Guide</title>
+    <link rel="stylesheet" href="/third_party/bootstrap.min.css">
+    <script src="/third_party/jquery-2.1.4.min.js"></script>
+    <script src="/third_party/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <% include header.html %>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h3>User Guide</h3>
+        <hr/>
+      </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h4>Submitting a job</h4>
+        <hr/>
+        <p>There are two ways to submit a test job to the autograder: ZIP upload
+        or SVN export.</p>
+
+        <p>In both workflows, the first step is to select the assignment name
+        from the Overview page by clicking <b>Select Assignment</b> and then
+        selecting the assignment in the dropdown.</p>
+
+        <p>For ZIP upload, you should then select the <b>Browse...</b> button
+        from the right side of the top of the Overview page, and select a ZIP
+        containing your submission from your local machine. This ZIP should be
+        created from the top-level assignment directory (e.g. hw_2) and should
+        contain a valid Maven project (e.g. with first-level child src/,
+        second-level child src/main/, third-level child src/main/java/, etc).</p>
+
+        <p>For SVN export submission, you can instead choose to enter an SVN URL
+        which points to a valid Maven project. Enter this URL in the field
+        marked <b>SVN URL</b>.</p>
+
+        <p>Selecting <b>Correctness Tests Only</b> will only test the
+        correctness of the submission, and not the performance. This can lead to
+        quicker jobs if you are not optimizing for performance yet.</p>
+
+        <p>Selecting <b>Enable Performance Profiling</b> will run the submission
+        through a third-party tool for performance analysis instead of executing
+        the performance tests on the cluster, producing diagnostics on where the
+        submission is spending its time. However, be aware that a bug in this
+        third-party tool may cause the job on the cluster to hang. Note that
+        using performance profiling with MPI programs is currently unsupported.</p>
+
+        <p>Finally, whether you chose ZIP upload or SVN export, click <b>Run</b>
+        and your job will be started!</p>
+      </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h4>Viewing run information</h4>
+        <hr/>
+        <p>Each run submission has its own dedicated run page that includes
+        information on its completion of checkstyle, compilation, correctness
+        tests, performance tests, elapsed time, and the final grade the
+        autograder assigned it. You can navigate to this page from the Overview
+        page via the individual links in the leftmost column of the Runs table.</p>
+
+        <p>The run page consists of a header followed by several text sections.</p>
+
+        <p>The header of the run page lists the score assigned to the run, the
+        elapsed time for the run, and a color-coded status bar for the run. The
+        score is calculated based on the correctness, performance, and style
+        tests that the submission passed using an instructor-provided rubric.
+        The header may also include a red error message if this run failed at an
+        unexpected point with information on the command that was running at the
+        point-of-failure.<p>
+
+        <p>The run page also allows you to tag runs with unique labels to help
+        you match a particular run with a particular version of the code. By
+        default, the autograder will populate the tag with the latest commit
+        message for any runs submitted using an SVN URL.Tags can be viewed and
+        updated in the textbox below the header.</p>
+
+        <p>The following text sections may also appear in each run page:</p>
+
+        <ol>
+            <li><b>Checkstyle</b>: This section shows the output of running
+            the Checkstyle tool on the user code using an instructor-provided
+            Checkstyle configuration.</li>
+            <li><b>Compilation</b>: This section shows the output of compiling
+            the student-provided Maven project.</li>
+            <li><b>Correctness Tests</b>: This section shows the output of running all
+            correctness unit tests on the student-provided code. Correctness
+            tests are identified by files ending with *CorrectnessTest.java.
+            Note that before executing these tests, the instructor can choose to
+            replace any test files with reference copies.</li>
+            <li><b>FindBugs Analysis</b>: This section shows the output of running
+            the Findbugs static checking tool on the student-submitted code.
+            Information on Findbugs is available
+            <a target="_blank" href=http://findbugs.sourceforge.net/>here</a>.</li>
+            <li><b>Cluster STDERR</b>: The prints to stderr while compiling a
+            submission on the compute cluster.</li>
+            <li><b>Cluster STDOUT</b>: The prints to stdout while compiling a
+            submission on the compute cluster.</li>
+            <li><b>Performance Tests (N cores)</b>: Prints performed while running a
+            performance experiment on the cluster with N cores/threads.</li>
+            <li><b>Traces</b>: A list of traces and trace counts during a sample
+            run of each test class. Higher trace counts for a given location
+            indicate that the program is spending more time there.</li>
+        </ol>
+
+        <p>One or more of these sections may be missing if an earlier stage
+        failed. For example, if compilation fails then no correctness tests will
+        be displayed.</p>
+      </div>
+    </div>
+
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h4>Viewing class information</h4>
+        <hr/>
+        <p> If you are curious about the status of the entire class on an
+        assignment, the Leaderboard view in the autograder can help. The
+        Leaderboard displays global run status for each assignment. You can
+        navigate to the Leaderboard by selecting <b>Leaderboard</b> from the top
+        menu. Select an assignment by clicking one of the blue buttons at the
+        top of the Leaderboard.</p>
+        <p>At the top of each assignment page are two graphs. The top graph
+        (titled "&lt;Assignment Name&gt; Performance History") plots the speedup
+        achieved by all submissions, with the most recent submissions on the
+        left. The bottom graph (titled "&lt;Assignment Name&gt; Speedup Distribution")
+        shows the distribution of best speedups achieved by each student.</p>
+        <p>Below these graphs, the page also includes a list of runs and
+        their metadata, including the run ID, whether the run finished or
+        experienced an internal failure, whether the submitted code passed
+        checkstyle, whether the submitted code successfully compiled, and
+        whether it passed all of the correctness tests.</p>
+      </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h4>Managing your user profile</h4>
+        <hr/>
+        <p>At the moment, the autograder has a very simple profile management
+        system that can be accessed by clicking <b>Profile</b> in the top right
+        hand corner of the screen. Your Profile page allows you to view to the
+        number of submissions you have performed and allows you to disable
+        e-mail notifications from the autograder.</p>
+      </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-md-8 col-md-offset-2">
+        <hr/>
+        <h4>Release Notes</h4>
+        <hr/>
+        <ol>
+          <li><b>Mar 10, 2016</b>: Address 'Select Assignment' and upload boxes overlapping on Overview page</li>
+          <li><b>Mar 10, 2016</b>: Add some limited profiling capability</li>
+          <li><b>Mar 8, 2016</b>: Add completion timestamps to overview page</li>
+          <li><b>Feb 24, 2016</b>: Handle submission URLs that do not start with https://</li>
+          <li><b>Feb 13, 2016</b>: Allow disabling of e-mail notifications</li>
+        </ol>
+      </div>
+    </div>
+
+    <% include footer.html %>
+  </body>
+</html>
